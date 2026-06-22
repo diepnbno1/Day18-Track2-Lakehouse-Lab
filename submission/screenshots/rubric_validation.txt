@@ -1,0 +1,9 @@
+﻿NB1 users_delta: numFiles=4 sizeInBytes=5044
+NB2 events_smallfiles: numFiles=1 sizeInBytes=644929
+NB3 customers_tt: numFiles=5 sizeInBytes=633980
+NB4 bronze: numFiles=16 sizeInBytes=68216938
+NB4 silver: numFiles=56 sizeInBytes=50786226
+NB4 gold: numFiles=7 sizeInBytes=15919
+NB3 history_versions=5 bad_score_rows_after_restore=0
+NB4 bronze_rows=1000000 silver_rows=949981 dedup_dropped=50019
+NB4 gold_dates=7 gold_models=3 gold_rows=21

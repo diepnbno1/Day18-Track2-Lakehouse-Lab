@@ -44,6 +44,13 @@ for batch in range(200):
     mode = "overwrite" if batch == 0 else "append"
     df.write.format("delta").mode(mode).save(path)
 
+detail_before = spark.sql(f"DESCRIBE DETAIL delta.`{path}`").select("numFiles", "sizeInBytes").first()
+files_before = detail_before["numFiles"]
+bytes_before = detail_before["sizeInBytes"]
+print(f"Files before OPTIMIZE: {files_before}  (target >= 100)")
+print(f"Size before OPTIMIZE:  {bytes_before:,} bytes")
+assert files_before >= 100, f"expected >=100 small files, got {files_before}"
+
 # %% [markdown]
 # ## 2. Benchmark BEFORE optimize
 
@@ -64,7 +71,12 @@ before = bench("BEFORE OPTIMIZE+ZORDER")
 # ## 3. OPTIMIZE + ZORDER
 
 # %%
-spark.sql(f"OPTIMIZE delta.`{path}` ZORDER BY (user_id)")
+opt_metrics = spark.sql(f"OPTIMIZE delta.`{path}` ZORDER BY (user_id)")
+opt_metrics.selectExpr(
+    "metrics.numFilesRemoved as numFilesRemoved",
+    "metrics.numFilesAdded as numFilesAdded",
+    "metrics.totalConsideredFiles as totalConsideredFiles",
+).show(truncate=False)
 
 # %% [markdown]
 # ## 4. Benchmark AFTER
@@ -78,9 +90,13 @@ print(f"\nSpeedup: {speedup:.1f}×  (target ≥ 3×)")
 # ## 5. Inspect file count change
 
 # %%
-spark.sql(f"DESCRIBE DETAIL delta.`{path}`").select(
-    "numFiles", "sizeInBytes"
-).show()
+detail_after = spark.sql(f"DESCRIBE DETAIL delta.`{path}`").select("numFiles", "sizeInBytes").first()
+files_after = detail_after["numFiles"]
+bytes_after = detail_after["sizeInBytes"]
+print(f"Files after OPTIMIZE+ZORDER: {files_after}  (was {files_before})")
+print(f"Size after OPTIMIZE+ZORDER:  {bytes_after:,} bytes")
+print(f"File reduction: {files_before} -> {files_after}  ({files_before / max(files_after, 1):.1f}x fewer)")
+assert files_after < files_before, "OPTIMIZE should reduce file count"
 
 # %% [markdown]
 # ## ✅ Deliverable check

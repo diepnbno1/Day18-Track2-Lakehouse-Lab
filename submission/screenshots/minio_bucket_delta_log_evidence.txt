@@ -1,0 +1,22 @@
+﻿Buckets:
+[2026-06-22 04:05:32 UTC]     0B bronze/
+[2026-06-22 04:05:32 UTC]     0B gold/
+[2026-06-22 04:05:32 UTC]     0B lakehouse/
+[2026-06-22 04:05:32 UTC]     0B silver/
+
+lakehouse/users_delta/_delta_log:
+[2026-06-22 04:17:29 UTC] 2.1KiB STANDARD 00000000000000000000.json
+[2026-06-22 04:17:41 UTC] 1.4KiB STANDARD 00000000000000000001.json
+[2026-06-22 04:34:28 UTC]     0B _commits/
+
+bronze/silver/gold table roots:
+[2026-06-22 04:34:28 UTC]     0B llm_calls_raw/
+[2026-06-22 04:34:28 UTC]     0B llm_calls/
+[2026-06-22 04:34:28 UTC]     0B llm_daily_metrics/
+
+gold/llm_daily_metrics/_delta_log:
+[2026-06-22 04:24:59 UTC]  14KiB STANDARD 00000000000000000000.json
+[2026-06-22 04:25:04 UTC]  11KiB STANDARD 00000000000000000001.json
+[2026-06-22 04:32:41 UTC]  15KiB STANDARD 00000000000000000002.json
+[2026-06-22 04:32:47 UTC]  11KiB STANDARD 00000000000000000003.json
+[2026-06-22 04:34:28 UTC]     0B _commits/

@@ -12,3 +12,7 @@ derby.log
 _lakehouse/
 notebooks/*.ipynb
 notebooks-spark/*.ipynb
+!notebooks-spark/01_delta_basics.ipynb
+!notebooks-spark/02_optimize_zorder.ipynb
+!notebooks-spark/03_time_travel.ipynb
+!notebooks-spark/04_medallion.ipynb

@@ -124,7 +124,30 @@ spark.sql(f"OPTIMIZE delta.`{GOLD}` ZORDER BY (model)")
 # ## Verify Gold
 
 # %%
-spark.read.format("delta").load(GOLD).orderBy("date", "model").show(20, truncate=False)
+gold = spark.read.format("delta").load(GOLD)
+gold.orderBy("date", "model").show(30, truncate=False)
+
+summary = gold.agg(
+    F.countDistinct("date").alias("dates"),
+    F.countDistinct("model").alias("models"),
+    F.count("*").alias("rows"),
+    F.min("cost_usd").alias("min_cost_usd"),
+    F.max("error_rate").alias("max_error_rate"),
+).first()
+
+print(
+    "\nGold deliverable metrics\n"
+    f"  Distinct dates:   {summary['dates']}  (target >= 7)\n"
+    f"  Distinct models:  {summary['models']}  (target = 3)\n"
+    f"  Total Gold rows:  {summary['rows']}  (= dates x models)\n"
+    f"  Min cost_usd:     {summary['min_cost_usd']:.6f}\n"
+    f"  Max error_rate:   {summary['max_error_rate']:.6f}"
+)
+
+assert summary["dates"] >= 7, "Gold must span at least 7 dates"
+assert summary["models"] == 3, "Gold should include all 3 models"
+assert summary["rows"] >= summary["dates"] * summary["models"], "Gold should have one row per date x model"
+assert summary["min_cost_usd"] > 0, "Gold cost_usd should be populated"
 
 # %% [markdown]
 # ## ✅ Deliverable check

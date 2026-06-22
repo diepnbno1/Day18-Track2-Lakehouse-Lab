@@ -24,6 +24,7 @@ def get_spark(app_name: str = "lakehouse-lab") -> SparkSession:
         .config(
             "spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem"
         )
+        .config("spark.jars.ivy", "/tmp/spark-ivy")
         .config("spark.sql.shuffle.partitions", "8")
     )
     return configure_spark_with_delta_pip(

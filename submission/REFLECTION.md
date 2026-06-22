@@ -1,3 +1,6 @@
+Student: Nguyễn Bách Điệp  
+Student ID: 2A202600535
+
 The anti-pattern our team is most likely to hit is the small-file swamp. LLM
 observability traffic looks like an append-only firehose: many tenants, many
 models, retries, errors, and near-real-time dashboards. If every micro-batch or

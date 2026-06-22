@@ -1,5 +1,8 @@
 # Architecture Brief: LLM Observability Lakehouse at 1B Requests/Day
 
+Student: Nguyễn Bách Điệp  
+Student ID: 2A202600535
+
 ## Problem Statement
 
 A foundation-model API platform logs 1B requests/day. Each request produces about
